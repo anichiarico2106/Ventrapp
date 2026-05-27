@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ventra</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    body{
+      background: linear-gradient(
+        135deg,
+        #020617 0%,
+        #071029 50%,
+        #020617 100%
+      );
+      font-family: Arial, sans-serif;
+      min-height:100vh;
+    }
+
+    .glass{
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(14px);
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+
+    input[type=range]{
+      width:100%;
+      accent-color:#00C896;
+    }
+
+    input{
+      outline:none;
+      color:white;
+    }
+
+    input::placeholder{
+      color:#9CA3AF;
+    }
+
+    details summary {
+      list-style: none;
+    }
+
+    details summary::-webkit-details-marker {
+      display:none;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+  </style>
+</head>
+
+<body class="text-white">
+
+  <!-- HERO -->
+  <section class="min-h-screen flex items-center justify-center px-6 py-20">
+
+    <div class="max-w-6xl w-full grid md:grid-cols-2 gap-16 items-center">
+
+      <!-- LEFT -->
+      <div>
+
+        <!-- LOGO -->
+        <img
+          src="Ventra-Photoroom.png"
+          alt="Ventra"
+          class="w-64 md:w-80 mb-2 drop-shadow-2xl"
+        >
+
+        <!-- TAGLINE -->
+        <p class="text-[#00C896] font-semibold tracking-[4px] uppercase text-sm mb-6">
+          FINTECH PARA DOCENTES
+        </p>
+
+        <!-- TITULO -->
+        <h1 class="text-5xl md:text-7xl font-bold leading-tight">
+          Solicita tu crédito
+          en minutos
+        </h1>
+
+        <!-- SUBTITULO -->
+        <p class="text-gray-300 mt-6 text-xl leading-relaxed">
+          Sin papeleos. Sin filas. 100% digital.
+        </p>
+
+        <!-- BOTON -->
+        <div class="mt-10">
+
+          <a href="#formulario"
+             class="inline-block bg-[#00C896] hover:bg-[#00b383] transition px-10 py-5 rounded-2xl font-bold text-black text-lg shadow-2xl">
+            QUIERO MI VENTRA
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- SIMULADOR -->
+      <div class="glass rounded-3xl p-8">
+
+        <h2 class="text-3xl font-bold text-center mb-10">
+          Simula tu crédito
+        </h2>
+
+        <!-- MONTO -->
+        <div class="mb-10">
+
+          <label class="text-gray-300 text-lg">
+            Monto
+          </label>
+
+          <input
+            type="range"
+            min="200000"
+            max="5000000"
+            step="50000"
+            value="1000000"
+            id="monto"
+          >
+
+          <p id="montoTexto"
+             class="text-5xl font-bold mt-8 text-center">
+            $1.000.000
+          </p>
+
+        </div>
+
+        <!-- MESES -->
+        <div class="mb-10">
+
+          <label class="text-gray-300 text-lg">
+            Plazo
+          </label>
+
+          <input
+            type="range"
+            min="1"
+            max="10"
+            step="1"
+            value="1"
+            id="meses"
+          >
+
+          <p id="mesesTexto"
+             class="text-3xl font-bold mt-8 text-center">
+            1 mes
+          </p>
+
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="bg-white text-black rounded-3xl p-8 text-center">
+
+          <p class="text-gray-500 text-sm">
+            Total a pagar
+          </p>
+
+          <h3 id="resultado"
+              class="text-5xl font-bold mt-4">
+            $1.102.350
+          </h3>
+
+          <p class="text-sm text-gray-500 mt-3">
+            Pago único al final del plazo
+          </p>
+
+          <!-- DETALLE -->
+          <details class="mt-8 text-left">
+
+            <summary class="cursor-pointer text-sm text-gray-500 hover:text-black">
+              Ver detalle
+            </summary>
+
+            <div class="mt-6 space-y-4 text-sm">
+
+              <div class="flex justify-between">
+                <span>Capital</span>
+                <span id="detalleCapital">$1.000.000</span>
+              </div>
+
+              <div class="flex justify-between">
+                <span>Interés financiero</span>
+                <span id="detalleInteres">$25.000</span>
+              </div>
+
+              <div class="flex justify-between">
+                <span>Gestión digital</span>
+                <span id="detalleGestion">$30.000</span>
+              </div>
+
+              <div class="flex justify-between">
+                <span>Validación laboral</span>
+                <span id="detalleValidacion">$20.000</span>
+              </div>
+
+              <div class="flex justify-between">
+                <span>Protección cartera</span>
+                <span id="detalleProteccion">$15.000</span>
+              </div>
+
+              <div class="flex justify-between">
+                <span>IVA</span>
+                <span id="detalleIVA">$12.350</span>
+              </div>
+
+            </div>
+
+          </details>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FORMULARIO -->
+  <section id="formulario" class="px-6 pb-20">
+
+    <div class="max-w-3xl mx-auto glass rounded-3xl p-10">
+
+      <h2 class="text-4xl font-bold text-center mb-3">
+        Solicita tu Ventra
+      </h2>
+
+      <p class="text-gray-300 text-center mb-10">
+        Completa el formulario y recibe una respuesta rápida.
+      </p>
+
+      <form id="creditoForm" class="space-y-6">
+
+        <input
+          type="text"
+          id="nombre"
+          placeholder="Nombre completo"
+          required
+          class="w-full p-4 rounded-xl bg-[#111827] border border-gray-700"
+        >
+
+        <input
+          type="text"
+          id="cedula"
+          placeholder="Número de cédula"
+          required
+          class="w-full p-4 rounded-xl bg-[#111827] border border-gray-700"
+        >
+
+        <input
+          type="text"
+          id="telefono"
+          placeholder="Número de celular"
+          required
+          class="w-full p-4 rounded-xl bg-[#111827] border border-gray-700"
+        >
+
+        <input
+          type="text"
+          id="empresa"
+          placeholder="Empresa donde trabaja"
+          required
+          class="w-full p-4 rounded-xl bg-[#111827] border border-gray-700"
+        >
+
+        <input
+          type="number"
+          id="ingresos"
+          placeholder="Ingreso mensual"
+          required
+          class="w-full p-4 rounded-xl bg-[#111827] border border-gray-700"
+        >
+
+        <!-- CHECKBOX -->
+
+        <label class="flex items-start gap-3 text-sm text-gray-300">
+
+          <input
+            type="checkbox"
+            id="abrirModal"
+            class="mt-1"
+          >
+
+          <span>
+            He leído y acepto los términos, costos y autorizaciones
+            asociados a la solicitud de crédito.
+          </span>
+
+        </label>
+
+        <!-- BOTON -->
+
+        <button
+          type="submit"
+          id="btnEnviar"
+          disabled
+          class="w-full bg-gray-500 text-black font-bold py-4 rounded-xl cursor-not-allowed transition"
+        >
+          ENVIAR SOLICITUD
+        </button>
+
+      </form>
+
+      <p id="mensaje"
+         class="text-center mt-6 font-bold">
+      </p>
+
+    </div>
+
+  </section>
+
+  <!-- MODAL -->
+
+  <div
+    id="modalLegal"
+    class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 p-6"
+  >
+
+    <div class="bg-white text-black max-w-2xl w-full rounded-3xl p-8 max-h-[80vh] overflow-y-auto">
+
+      <h2 class="text-3xl font-bold mb-6">
+        Términos y autorizaciones
+      </h2>
+
+      <div class="space-y-4 text-sm text-gray-700 leading-relaxed">
+
+        <p>
+          Ventra realiza procesos de validación laboral, gestión digital,
+          administración operativa y análisis de riesgo asociados a la
+          solicitud de crédito.
+        </p>
+
+        <p>
+          El usuario declara conocer y aceptar los costos asociados a la
+          operación, incluyendo interés financiero, gestión digital,
+          validación laboral, protección de cartera e impuestos aplicables.
+        </p>
+
+        <p>
+          Asimismo autoriza el tratamiento de sus datos personales
+          conforme a la legislación colombiana vigente.
+        </p>
+
+        <p>
+          La simulación presentada corresponde a una referencia informativa
+          y está sujeta a validación y aprobación final.
+        </p>
+
+      </div>
+
+      <div class="flex gap-4 mt-10">
+
+        <button
+          id="aceptarModal"
+          class="flex-1 bg-[#00C896] text-black font-bold py-4 rounded-xl"
+        >
+          Acepto
+        </button>
+
+        <button
+          id="cerrarModal"
+          class="flex-1 bg-gray-200 py-4 rounded-xl"
+        >
+          Cancelar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    // ====================================
+    // CONFIGURACIÓN SUPABASE
+    // ====================================
+
+    const SUPABASE_URL = "PON_AQUI_TU_SUPABASE_URL";
+    const SUPABASE_ANON_KEY = "PON_AQUI_TU_SUPABASE_ANON_KEY";
+
+    let client = null;
+
+    if(
+      SUPABASE_URL !== "PON_AQUI_TU_SUPABASE_URL" &&
+      SUPABASE_ANON_KEY !== "PON_AQUI_TU_SUPABASE_ANON_KEY"
+    ){
+
+      client = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
+
+    }
+
+    // ====================================
+    // SIMULADOR
+    // ====================================
+
+    const monto = document.getElementById("monto");
+    const meses = document.getElementById("meses");
+
+    function formato(numero){
+      return "$" + numero.toLocaleString("es-CO");
+    }
+
+    function actualizar(){
+
+      const montoValor = parseInt(monto.value);
+
+      const mesesValor = parseInt(meses.value);
+
+      // COSTOS
+
+      const interes =
+        montoValor * 0.025 * mesesValor;
+
+      const gestion =
+        montoValor * 0.03 * mesesValor;
+
+      const validacion =
+        montoValor * 0.02 * mesesValor;
+
+      const proteccion =
+        montoValor * 0.015 * mesesValor;
+
+      const iva =
+        (gestion + validacion + proteccion) * 0.19;
+
+      // TOTAL
+
+      const total =
+        montoValor +
+        interes +
+        gestion +
+        validacion +
+        proteccion +
+        iva;
+
+      // MOSTRAR
+
+      document.getElementById("montoTexto")
+        .innerText = formato(montoValor);
+
+      document.getElementById("mesesTexto")
+        .innerText = mesesValor + (mesesValor === 1 ? " mes" : " meses");
+
+      document.getElementById("resultado")
+        .innerText = formato(Math.round(total));
+
+      document.getElementById("detalleCapital")
+        .innerText = formato(montoValor);
+
+      document.getElementById("detalleInteres")
+        .innerText = formato(Math.round(interes));
+
+      document.getElementById("detalleGestion")
+        .innerText = formato(Math.round(gestion));
+
+      document.getElementById("detalleValidacion")
+        .innerText = formato(Math.round(validacion));
+
+      document.getElementById("detalleProteccion")
+        .innerText = formato(Math.round(proteccion));
+
+      document.getElementById("detalleIVA")
+        .innerText = formato(Math.round(iva));
+
+    }
+
+    monto.addEventListener("input", actualizar);
+    meses.addEventListener("input", actualizar);
+
+    actualizar();
+
+    // ====================================
+    // MODAL LEGAL
+    // ====================================
+
+    const abrirModal =
+      document.getElementById("abrirModal");
+
+    const modal =
+      document.getElementById("modalLegal");
+
+    const aceptarModal =
+      document.getElementById("aceptarModal");
+
+    const cerrarModal =
+      document.getElementById("cerrarModal");
+
+    const btnEnviar =
+      document.getElementById("btnEnviar");
+
+    abrirModal.addEventListener("change", ()=>{
+
+      if(abrirModal.checked){
+
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+
+      }else{
+
+        btnEnviar.disabled = true;
+
+        btnEnviar.classList.remove(
+          "bg-[#00C896]",
+          "cursor-pointer"
+        );
+
+        btnEnviar.classList.add(
+          "bg-gray-500",
+          "cursor-not-allowed"
+        );
+
+      }
+
+    });
+
+    aceptarModal.addEventListener("click", ()=>{
+
+      modal.classList.add("hidden");
+
+      btnEnviar.disabled = false;
+
+      btnEnviar.classList.remove(
+        "bg-gray-500",
+        "cursor-not-allowed"
+      );
+
+      btnEnviar.classList.add(
+        "bg-[#00C896]",
+        "cursor-pointer"
+      );
+
+    });
+
+    cerrarModal.addEventListener("click", ()=>{
+
+      modal.classList.add("hidden");
+
+      abrirModal.checked = false;
+
+    });
+
+    // ====================================
+    // FORMULARIO
+    // ====================================
+
+    const form = document.getElementById("creditoForm");
+
+    form.addEventListener("submit", async (e)=>{
+
+      e.preventDefault();
+
+      if(!client){
+
+        alert("Debes configurar Supabase");
+
+        return;
+
+      }
+
+      const data = {
+        nombre: document.getElementById("nombre").value,
+        cedula: document.getElementById("cedula").value,
+        telefono: document.getElementById("telefono").value,
+        empresa: document.getElementById("empresa").value,
+        ingresos: document.getElementById("ingresos").value,
+        monto: parseInt(monto.value),
+        meses: parseInt(meses.value)
+      };
+
+      const { error } = await client
+        .from("solicitudes")
+        .insert([data]);
+
+      if(error){
+
+        console.log(error);
+
+        document.getElementById("mensaje").innerText =
+          "Error al enviar solicitud";
+
+      }else{
+
+        document.getElementById("mensaje").innerText =
+          "Solicitud enviada correctamente";
+
+        form.reset();
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
