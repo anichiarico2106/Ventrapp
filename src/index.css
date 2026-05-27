@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    linear-gradient(
+      135deg,
+      #020617 0%,
+      #071029 50%,
+      #020617 100%
+    );
+
+  color: white;
+  font-family: Inter, sans-serif;
+  min-height: 100vh;
+}
