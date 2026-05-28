@@ -1,8 +1,13 @@
 import ventraLogo from './../assets/logo.png'
 import Simulator from './Simulator'
 
-function Hero() {
-  return (
+        function Hero({
+
+        creditData,
+        setCreditData
+
+        }) {
+    return (
     <section className="min-h-screen flex items-center justify-center px-6 py-20">
 
       <div className="max-w-7xl w-full grid md:grid-cols-2 gap-16 items-center">
@@ -42,7 +47,13 @@ function Hero() {
 
         {/* RIGHT */}
 
-        <Simulator />
+            <Simulator
+
+            creditData={creditData}
+
+            setCreditData={setCreditData}
+
+            />
 
       </div>
 

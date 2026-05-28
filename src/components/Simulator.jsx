@@ -1,16 +1,39 @@
-import { useState } from 'react'
 import {
   calculateCredit,
   formatCurrency
 } from '../utils/finance'
 
-function Simulator() {
+function Simulator({
 
-  const [amount, setAmount] = useState(1000000)
-  const [months, setMonths] = useState(1)
+  creditData,
+  setCreditData
+
+}) {
+
+  const amount = creditData.amount
+
+  const months = creditData.months
 
   const result =
     calculateCredit(amount, months)
+
+  // ACTUALIZAR TOTAL GLOBAL
+
+  if (creditData.total !== result.total) {
+
+    setTimeout(() => {
+
+      setCreditData({
+
+        ...creditData,
+
+        total: result.total
+
+      })
+
+    }, 0)
+
+  }
 
   return (
 
@@ -44,7 +67,15 @@ function Simulator() {
           step="50000"
           value={amount}
           onChange={(e) =>
-            setAmount(Number(e.target.value))
+
+            setCreditData({
+
+              ...creditData,
+
+              amount: Number(e.target.value)
+
+            })
+
           }
           className="
             w-full
@@ -74,7 +105,15 @@ function Simulator() {
           step="1"
           value={months}
           onChange={(e) =>
-            setMonths(Number(e.target.value))
+
+            setCreditData({
+
+              ...creditData,
+
+              months: Number(e.target.value)
+
+            })
+
           }
           className="
             w-full

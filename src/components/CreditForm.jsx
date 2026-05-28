@@ -1,35 +1,45 @@
 import { useState } from 'react'
 import Swal from 'sweetalert2'
+
 import LegalModal from './LegalModal'
 import ClauseModal from './ClauseModal'
+
 import { supabase } from '../services/supabase'
 
-function CreditForm() {
+function CreditForm({
 
-    const [loading, setLoading] = useState(false)
+  creditData
 
-    const [accepted, setAccepted] = useState(false)
+}) {
 
-    const [acceptedClause, setAcceptedClause] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-    const [openModal, setOpenModal] = useState(false)
+  const [accepted, setAccepted] = useState(false)
 
-    const [openClause, setOpenClause] = useState(false)
+  const [acceptedClause, setAcceptedClause] = useState(false)
 
+  const [openModal, setOpenModal] = useState(false)
+
+  const [openClause, setOpenClause] = useState(false)
 
   const [formData, setFormData] = useState({
+
     nombre: '',
     cedula: '',
     telefono: '',
     empresa: '',
     ingresos: ''
+
   })
 
   const handleChange = (e) => {
 
     setFormData({
+
       ...formData,
+
       [e.target.name]: e.target.value
+
     })
 
   }
@@ -72,10 +82,23 @@ function CreditForm() {
           .from('solicitudes_credito')
           .insert([
             {
+
               usuario_id: usuario.id,
-              monto: 1000000,
-              meses: 1,
-              estado: 'pendiente'
+
+              monto: creditData.amount,
+
+              meses: creditData.months,
+
+              total_pagar: creditData.total,
+
+              estado: 'pendiente',
+
+              acepto_terminos: accepted,
+
+              acepto_tratamiento_datos: acceptedClause,
+
+              fecha_simulacion: new Date().toISOString()
+
             }
           ])
 
@@ -106,12 +129,18 @@ function CreditForm() {
       // RESET
 
       setFormData({
+
         nombre: '',
         cedula: '',
         telefono: '',
         empresa: '',
         ingresos: ''
+
       })
+
+      setAccepted(false)
+
+      setAcceptedClause(false)
 
     } catch (error) {
 
@@ -247,166 +276,171 @@ function CreditForm() {
             "
           />
 
-            <div className="space-y-6">
+          <div className="space-y-6">
 
             {/* TERMINOS */}
 
             <label
-                className="
-                flex
-                items-start
-                gap-3
-                text-sm
-                text-gray-300
+              className="
+              flex
+              items-start
+              gap-3
+              text-sm
+              text-gray-300
             "
             >
 
-                <input
+              <input
                 type="checkbox"
                 checked={accepted}
                 onChange={() => {
 
-                    if(!accepted){
+                  if(!accepted){
 
                     setOpenModal(true)
 
-                    } else {
+                  } else {
 
                     setAccepted(false)
 
-                    }
+                  }
 
                 }}
                 className="mt-1"
-                />
+              />
 
-                <span>
+              <span>
                 He leído y acepto los términos,
                 costos y autorizaciones asociados
                 a la solicitud de crédito.
-                </span>
+              </span>
 
             </label>
 
-            {/* CLAUSULA XXXX */}
+            {/* CLAUSULA */}
 
             <label
-                className="
-                flex
-                items-start
-                gap-3
-                text-sm
-                text-gray-300
+              className="
+              flex
+              items-start
+              gap-3
+              text-sm
+              text-gray-300
             "
             >
 
-                <input
+              <input
                 type="checkbox"
                 checked={acceptedClause}
                 onChange={() => {
 
-                    if(!acceptedClause){
+                  if(!acceptedClause){
 
                     setOpenClause(true)
 
-                    } else {
+                  } else {
 
                     setAcceptedClause(false)
 
-                    }
+                  }
 
                 }}
                 className="mt-1"
-                />
+              />
 
-                <span>
+              <span>
                 He leído y acepto el tratamiento de datos.
-                </span>
+              </span>
 
             </label>
 
-            </div>
-            <button
+          </div>
+
+          <button
             type="submit"
             disabled={
-                loading ||
-                !accepted ||
-                !acceptedClause
+              loading ||
+              !accepted ||
+              !acceptedClause
             }
             className={`
-                w-full
-                py-4
-                rounded-xl
-                font-bold
-                transition-all
-                duration-300
+              w-full
+              py-4
+              rounded-xl
+              font-bold
+              transition-all
+              duration-300
 
-                ${
+              ${
                 loading ||
                 !accepted ||
                 !acceptedClause
-                    ? 'bg-gray-600 text-white cursor-not-allowed'
-                    : 'bg-[#00C896] text-black hover:bg-[#00b383]'
-                }
+                  ? 'bg-gray-600 text-white cursor-not-allowed'
+                  : 'bg-[#00C896] text-black hover:bg-[#00b383]'
+              }
             `}
-            >
+          >
 
             {
-                loading
+              loading
                 ? 'ENVIANDO...'
                 : 'ENVIAR SOLICITUD'
             }
 
-            </button>
+          </button>
+
         </form>
 
       </div>
 
-        <LegalModal
+      <LegalModal
 
         isOpen={openModal}
 
         onAccept={() => {
 
-            setAccepted(true)
+          setAccepted(true)
 
-            setOpenModal(false)
+          setOpenModal(false)
 
         }}
 
         onClose={() => {
 
-            setAccepted(false)
+          setAccepted(false)
 
-            setOpenModal(false)
+          setOpenModal(false)
 
         }}
 
-        />
-        <ClauseModal
+      />
+
+      <ClauseModal
 
         isOpen={openClause}
 
         onAccept={() => {
 
-            setAcceptedClause(true)
+          setAcceptedClause(true)
 
-            setOpenClause(false)
+          setOpenClause(false)
 
         }}
 
         onClose={() => {
 
-            setAcceptedClause(false)
+          setAcceptedClause(false)
 
-            setOpenClause(false)
+          setOpenClause(false)
 
         }}
 
-        />
+      />
+
     </section>
 
   )
+
 }
 
 export default CreditForm
