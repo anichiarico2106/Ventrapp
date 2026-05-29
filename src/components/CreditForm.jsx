@@ -146,22 +146,6 @@ function CreditForm({
 
         console.error(error)
 
-        Swal.fire({
-
-        icon: 'error',
-
-        title: 'Error',
-
-        text: error.message,
-
-        confirmButtonColor: '#00C896',
-
-        background: '#0B1120',
-
-        color: '#fff'
-
-        })
-
       Swal.fire({
         icon: 'error',
         title: 'Error',
