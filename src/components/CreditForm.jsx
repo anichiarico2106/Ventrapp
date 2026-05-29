@@ -174,6 +174,7 @@ function CreditForm({
         nombre: '',
         cedula: '',
         telefono: '',
+        email: '',
         empresa: '',
         ingresos: ''
 
