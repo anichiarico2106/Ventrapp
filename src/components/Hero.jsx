@@ -35,14 +35,6 @@ import Simulator from './Simulator'
             Sin papeleos. Sin filas. 100% digital.
           </p>
 
-          <button
-            className="mt-10 bg-[#00C896] hover:bg-[#00b383]
-            transition px-10 py-5 rounded-2xl
-            font-bold text-black text-lg shadow-2xl"
-          >
-            QUIERO MI VENTRA
-          </button>
-
         </div>
 
         {/* RIGHT */}

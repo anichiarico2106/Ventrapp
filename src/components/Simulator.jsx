@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import {
   calculateCredit,
   formatCurrency
@@ -19,21 +21,18 @@ function Simulator({
 
   // ACTUALIZAR TOTAL GLOBAL
 
-  if (creditData.total !== result.total) {
+    useEffect(() => {
 
-    setTimeout(() => {
+      if (creditData.total !== result.total) {
 
-      setCreditData({
+        setCreditData(prev => ({
+          ...prev,
+          total: result.total
+        }))
 
-        ...creditData,
+      }
 
-        total: result.total
-
-      })
-
-    }, 0)
-
-  }
+    }, [result.total])
 
   return (
 
@@ -189,6 +188,33 @@ function Simulator({
         </details>
 
       </div>
+      <button
+      onClick={() => {
+
+        document
+          .getElementById('formulario')
+          ?.scrollIntoView({
+            behavior: 'smooth'
+          })
+
+      }}
+      className="
+        w-full
+        mt-8
+        bg-[#00C896]
+        hover:bg-[#00b383]
+        transition-all
+        duration-300
+        py-5
+        rounded-2xl
+        font-bold
+        text-black
+        text-lg
+        shadow-xl
+      "
+    >
+      QUIERO MI VENTRA
+    </button>
 
     </div>
 
