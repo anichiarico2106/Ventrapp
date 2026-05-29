@@ -23,26 +23,51 @@ function CreditForm({
   const [openClause, setOpenClause] = useState(false)
 
   const [formData, setFormData] = useState({
-
     nombre: '',
     cedula: '',
     telefono: '',
+    email: '',
     empresa: '',
     ingresos: ''
-
   })
 
-  const handleChange = (e) => {
+    const handleChange = (e) => {
 
-    setFormData({
+      const { name, value } = e.target
 
-      ...formData,
+      if (name === 'nombre') {
 
-      [e.target.name]: e.target.value
+        const onlyLetters = value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')
 
-    })
+        setFormData({
+          ...formData,
+          [name]: onlyLetters
+        })
 
-  }
+        return
+      }
+
+      if (
+        name === 'cedula' ||
+        name === 'telefono' ||
+        name === 'ingresos'
+      ) {
+
+        const onlyNumbers = value.replace(/\D/g, '')
+
+        setFormData({
+          ...formData,
+          [name]: onlyNumbers
+        })
+
+        return
+      }
+
+      setFormData({
+        ...formData,
+        [name]: value
+      })
+    }
 
   const handleSubmit = async (e) => {
 
@@ -52,21 +77,37 @@ function CreditForm({
 
       setLoading(true)
 
+      const { data: existingUser } = await supabase
+        .from('usuarios')
+        .select('id')
+        .eq('cedula', formData.cedula)
+        .maybeSingle()
       // =========================
       // CREAR USUARIO
       // =========================
+        if(Number(formData.ingresos) <= 0){
 
+          Swal.fire({
+            icon: 'warning',
+            title: 'Ingreso inválido',
+            text: 'El ingreso debe ser mayor a cero'
+          })
+
+          return
+        }
       const { data: usuario, error: userError } =
         await supabase
           .from('usuarios')
           .insert([
-            {
-              nombre: formData.nombre,
-              cedula: formData.cedula,
-              telefono: formData.telefono,
-              empresa: formData.empresa,
-              ingresos: formData.ingresos
-            }
+          {
+            nombre: formData.nombre,
+            cedula: formData.cedula,
+            telefono: formData.telefono,
+            email: formData.email,
+            empresa: formData.empresa,
+            ingresos: formData.ingresos,
+            estado: 'pendiente'
+          }
           ])
           .select()
           .single()
@@ -234,6 +275,22 @@ function CreditForm({
             placeholder="Número de celular"
             required
             value={formData.telefono}
+            onChange={handleChange}
+            className="
+              w-full
+              p-4
+              rounded-xl
+              bg-[#111827]
+              border border-gray-700
+            "
+          />
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Correo electrónico"
+            required
+            value={formData.email}
             onChange={handleChange}
             className="
               w-full
